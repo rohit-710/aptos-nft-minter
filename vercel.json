@@ -5,7 +5,6 @@
   "functions": {
     "api/events.js": {
       "runtime": "nodejs14.x",
-      "memory": 3008,
       "maxDuration": 10
     }
   }
