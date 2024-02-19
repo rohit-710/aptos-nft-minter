@@ -65,8 +65,8 @@ function App() {
       alert("An error occurred. Check the console for details.");
     }
   };
+
   useEffect(() => {
-    // Replace these with your actual Pusher key and cluster
     const pusher = new Pusher(process.env.REACT_APP_KEY, {
       cluster: process.env.REACT_APP_CLUSTER,
       encrypted: true,
@@ -74,12 +74,12 @@ function App() {
 
     const channel = pusher.subscribe("aptos-nft-minter");
     channel.bind("nft-event", function (data) {
-      // Update state with the new data
-      setWebhookData((prevData) => [...prevData, data.message]);
+      // Assuming 'data' is the entire payload
+      setWebhookData((prevData) => [...prevData, data]);
     });
 
     return () => {
-      pusher.unsubscribe("aptos-nft-minter-channel");
+      pusher.unsubscribe("aptos-nft-minter");
     };
   }, []);
 

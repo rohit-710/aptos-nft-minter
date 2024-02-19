@@ -12,25 +12,11 @@ const pusher = new Pusher({
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
-    let message;
+    // Directly use the received JSON payload
+    const payload = req.body;
 
-    // Handle the nfts.create.succeeded event
-    if (req.body.type === "nfts.create.succeeded") {
-      message = `[webhook] Successfully minted NFT with ID ${req.body.data.token.id}`;
-      console.log(message);
-    }
-    // Handle the nfts.create.failed event
-    else if (req.body.type === "nfts.create.failed") {
-      message = `[webhook] Failed to mint NFT with action ID ${req.body.actionId}`;
-      console.log(message);
-    }
-
-    // Use Pusher to broadcast this message to your frontend
-    if (message) {
-      await pusher.trigger("aptos-nft-minter", "nft-event", {
-        message,
-      });
-    }
+    // Use Pusher to broadcast this payload to your frontend
+    await pusher.trigger("aptos-nft-minter", "nft-event", payload);
 
     res.status(200).json({ message: "Webhook processed" });
   } else {
