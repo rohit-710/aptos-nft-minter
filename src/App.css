@@ -48,16 +48,20 @@ button:hover {
   opacity: 0.8;
 }
 
-.response {
-  margin-top: 20px;
+.response,
+.sse-messages {
+  margin: 20px auto; /* Centering */
   padding: 20px;
   background-color: #333; /* Dark background for contrast */
   color: #fff; /* Light text color */
   border-radius: 10px;
+  width: 50%; /* Takes up half of the screen width */
+  max-width: 600px; /* Adjust this value based on your design preference */
   overflow-x: auto; /* Adds horizontal scrolling if content is too wide */
 }
 
-.response pre {
+.response pre,
+.sse-messages pre {
   white-space: pre-wrap; /* Allows text to wrap */
   word-wrap: break-word; /* Breaks the word to prevent overflow */
   text-align: left; /* Aligns text to left */
