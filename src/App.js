@@ -72,7 +72,7 @@ function App() {
       encrypted: true,
     });
 
-    const channel = pusher.subscribe("aptos-nft-minter-channel");
+    const channel = pusher.subscribe("aptos-nft-minter");
     channel.bind("nft-event", function (data) {
       // Update state with the new data
       setWebhookData((prevData) => [...prevData, data]);
