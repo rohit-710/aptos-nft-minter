@@ -1,4 +1,12 @@
 {
   "version": 2,
-  "routes": [{ "src": "/api/(.*)", "dest": "/api/$1.js" }]
+  "routes": [{ "src": "/api/(.*)", "dest": "/api/$1.js" }],
+
+  "functions": {
+    "api/events.js": {
+      "runtime": "nodejs14.x",
+      "memory": 3008,
+      "maxDuration": 15
+    }
+  }
 }

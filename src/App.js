@@ -24,7 +24,7 @@ function App() {
   // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const proxyUrl = "https://aptos-nft-minter-eight.vercel.app/api/mint-nft";
+    const proxyUrl = "/api/mint-nft";
 
     try {
       const response = await fetch(proxyUrl, {
@@ -54,13 +54,20 @@ function App() {
 
   // Effect hook to listen for SSE events
   useEffect(() => {
-    const eventSource = new EventSource(
-      "https://aptos-nft-minter-eight.vercel.app/api/events"
-    );
+    const eventSource = new EventSource("/api/events");
 
     eventSource.onmessage = (event) => {
       const newEvent = JSON.parse(event.data);
       setSseMessages((prevMessages) => [...prevMessages, newEvent]);
+    };
+
+    eventSource.onerror = (error) => {
+      console.error("EventSource failed:", error);
+      eventSource.close();
+      // Implementing a basic reconnection attempt
+      setTimeout(() => {
+        window.location.reload();
+      }, 5000);
     };
 
     return () => {
