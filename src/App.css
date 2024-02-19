@@ -51,11 +51,14 @@ button:hover {
 .response {
   margin-top: 20px;
   padding: 20px;
-  background-color: #f0f0f0;
+  background-color: #333; /* Dark background for contrast */
+  color: #fff; /* Light text color */
   border-radius: 10px;
+  overflow-x: auto; /* Adds horizontal scrolling if content is too wide */
 }
 
 .response pre {
-  white-space: pre-wrap;
-  word-wrap: break-word;
+  white-space: pre-wrap; /* Allows text to wrap */
+  word-wrap: break-word; /* Breaks the word to prevent overflow */
+  text-align: left; /* Aligns text to left */
 }
