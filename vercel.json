@@ -4,7 +4,6 @@
 
   "functions": {
     "api/events.js": {
-      "runtime": "nodejs14.x",
       "maxDuration": 10
     }
   }
