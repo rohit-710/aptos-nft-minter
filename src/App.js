@@ -5,6 +5,7 @@ import logo from "./AptosCover.png";
 function App() {
   const [apiResponse, setApiResponse] = useState(null);
   const [sseMessages, setSseMessages] = useState([]); // State to store SSE messages
+  const [updates, setUpdates] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -19,6 +20,17 @@ function App() {
       ...prevState,
       [name]: value,
     }));
+  };
+
+  // Function to fetch updates from your API
+  const fetchUpdates = async () => {
+    try {
+      const response = await fetch("/api/updates"); // Adjust the URL as needed
+      const data = await response.json();
+      setUpdates(data); // Update your state with the new updates
+    } catch (error) {
+      console.error("Failed to fetch updates:", error);
+    }
   };
 
   // Function to handle form submission
@@ -75,6 +87,13 @@ function App() {
     };
   }, []);
 
+  useEffect(() => {
+    fetchUpdates(); // Initial fetch
+    const intervalId = setInterval(fetchUpdates, 10000); // Poll every 10 seconds
+
+    return () => clearInterval(intervalId); // Cleanup on component unmount
+  }, []);
+
   return (
     <div className="App">
       <form onSubmit={handleSubmit} className="form">
@@ -125,10 +144,14 @@ function App() {
       )}
       {/* Display SSE messages */}
       <div className="sse-messages">
-        <h2>SSE Messages:</h2>
-        {sseMessages.map((msg, index) => (
-          <pre key={index}>{JSON.stringify(msg, null, 2)}</pre>
-        ))}
+        <h1>Updates</h1>
+        <ul>
+          {updates.map((update) => (
+            <li key={update.id}>
+              {update.message} - {update.timestamp}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
