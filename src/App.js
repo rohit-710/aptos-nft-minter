@@ -71,7 +71,43 @@ function App() {
   return (
     <div className="App">
       <form onSubmit={handleSubmit} className="form">
-        {/* Form inputs and submit button */}
+        <img
+          src={logo}
+          alt="Crossmint Ninja"
+          className="nft-logo"
+          width="200"
+          height="200"
+        />
+        <h1 style={{ color: "#1ABC9C" }}>Mint Your NFT</h1>
+        <input
+          type="text"
+          name="name"
+          placeholder="Name"
+          value={formData.name}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          name="description"
+          placeholder="Description"
+          value={formData.description}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          name="image"
+          placeholder="Image URL"
+          value={formData.image}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          name="recipient"
+          placeholder="Recipient Address"
+          value={formData.recipient}
+          onChange={handleChange}
+        />
+        <button type="submit">Mint NFT</button>
       </form>
       {/* Display API response */}
       {apiResponse && (
