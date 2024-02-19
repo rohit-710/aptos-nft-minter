@@ -4,6 +4,7 @@ import axios from "axios";
 import logo from "./AptosCover.png";
 
 function App() {
+  const [apiResponse, setApiResponse] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -21,7 +22,7 @@ function App() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const proxyUrl = "http://localhost:3001/api/mint-nft";
+    const proxyUrl = "https://aptos-nft-minter-eight.vercel.app/api/mint-nft";
 
     try {
       const response = await fetch(proxyUrl, {
@@ -41,7 +42,8 @@ function App() {
 
       const responseData = await response.json();
       console.log(responseData);
-      alert("Minting Successful! Check the console for the response.");
+      setApiResponse(responseData); // Update the state with the API response
+      alert("Minting Successful! Check the response below.");
     } catch (err) {
       console.error(err);
       alert("An error occurred. Check the console for details.");
@@ -89,6 +91,12 @@ function App() {
         />
         <button type="submit">Mint NFT</button>
       </form>
+      {apiResponse && (
+        <div className="response">
+          <h2>API Response:</h2>
+          <pre>{JSON.stringify(apiResponse, null, 2)}</pre>
+        </div>
+      )}
     </div>
   );
 }

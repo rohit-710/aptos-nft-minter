@@ -47,3 +47,15 @@ button {
 button:hover {
   opacity: 0.8;
 }
+
+.response {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+}
+
+.response pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
