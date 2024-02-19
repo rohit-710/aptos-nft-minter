@@ -22,26 +22,28 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const options = {
-      metadata: {
-        description: formData.description,
-        image: formData.image,
-        name: formData.name,
+      method: "POST",
+      headers: {
+        "X-API-KEY": process.env.REACT_APP_API_KEY,
+        "Content-Type": "application/json",
       },
-      recipient: `aptos:${formData.recipient}`,
+      body: JSON.stringify({
+        metadata: {
+          description: formData.description,
+          image: formData.image,
+          name: formData.name,
+        },
+        recipient: `aptos:${formData.recipient}`,
+      }),
     };
 
     try {
-      const response = await axios.post(
+      const response = await fetch(
         `https://staging.crossmint.com/api/2022-06-09/collections/${process.env.REACT_APP_COLLECTION_ID}/nfts`,
-        options,
-        {
-          headers: {
-            "X-API-KEY": process.env.REACT_APP_API_KEY,
-            "Content-Type": "application/json",
-          },
-        }
+        options
       );
-      console.log(response.data);
+      const responseData = await response.json();
+      console.log(responseData);
       alert("Minting Successful! Check the console for response.");
     } catch (err) {
       console.error(err);
