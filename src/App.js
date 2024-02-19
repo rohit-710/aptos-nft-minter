@@ -21,34 +21,30 @@ function App() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const options = {
-      method: "POST",
-      headers: {
-        "X-API-KEY": process.env.REACT_APP_API_KEY,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        metadata: {
-          description: formData.description,
-          image: formData.image,
-          name: formData.name,
-        },
-        recipient: `aptos:${formData.recipient}`,
-      }),
-    };
+    const proxyUrl = "http://localhost:3001/api/mint-nft";
 
     try {
-      const response = await fetch(
-        `https://staging.crossmint.com/api/2022-06-09/collections/${process.env.REACT_APP_COLLECTION_ID}/nfts`,
-        options
-      );
+      const response = await fetch(proxyUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          metadata: {
+            description: formData.description,
+            image: formData.image,
+            name: formData.name,
+          },
+          recipient: `aptos:${formData.recipient}`,
+        }),
+      });
+
       const responseData = await response.json();
       console.log(responseData);
-      alert("Minting Successful! Check the console for response.");
+      alert("Minting Successful! Check the console for the response.");
     } catch (err) {
       console.error(err);
       alert("An error occurred. Check the console for details.");
-      console.log(process.env.REACT_APP_COLLECTION_ID);
     }
   };
 
