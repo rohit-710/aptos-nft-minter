@@ -64,29 +64,7 @@ function App() {
     }
   };
 
-  // Effect hook to listen for SSE events
-  useEffect(() => {
-    const eventSource = new EventSource("/api/events");
-
-    eventSource.onmessage = (event) => {
-      const newEvent = JSON.parse(event.data);
-      setSseMessages((prevMessages) => [...prevMessages, newEvent]);
-    };
-
-    eventSource.onerror = (error) => {
-      console.error("EventSource failed:", error);
-      eventSource.close();
-      // Implementing a basic reconnection attempt
-      setTimeout(() => {
-        window.location.reload();
-      }, 5000);
-    };
-
-    return () => {
-      eventSource.close();
-    };
-  }, []);
-
+  // Polling mechanism for fetching updates
   useEffect(() => {
     fetchUpdates(); // Initial fetch
     const intervalId = setInterval(fetchUpdates, 10000); // Poll every 10 seconds
