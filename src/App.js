@@ -135,7 +135,7 @@ function App() {
       <div className="sse-messages">
         <h2>Webhook Data:</h2>
         {webhookData.map((dataItem, index) => (
-          <pre key={index}>{JSON.stringify(dataItem, null, 2)}</pre>
+          <pre key={index}>{JSON.stringify(dataItem)}</pre>
         ))}
       </div>
     </div>
