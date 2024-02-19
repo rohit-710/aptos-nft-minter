@@ -134,7 +134,9 @@ function App() {
       {/* Display SSE messages */}
       <div className="sse-messages">
         <h2>Webhook Data:</h2>
-        <pre key={index}>{JSON.stringify(data, null, 2)}</pre>
+        {webhookData.map((dataItem, index) => (
+          <pre key={index}>{JSON.stringify(dataItem, null, 2)}</pre>
+        ))}
       </div>
     </div>
   );
