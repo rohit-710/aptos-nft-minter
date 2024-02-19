@@ -12,20 +12,28 @@ const pusher = new Pusher({
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
-    const data = req.body; // Your webhook payload
+    let message;
 
-    // Trigger an event to your channel with the webhook data
-    await pusher.trigger("aptos-nft-minter-channel", "webhook-event", data);
+    // Handle the nfts.create.succeeded event
+    if (req.body.type === "nfts.create.succeeded") {
+      message = `[webhook] Successfully minted NFT with ID ${req.body.data.token.id}`;
+      console.log(message);
+    }
+    // Handle the nfts.create.failed event
+    else if (req.body.type === "nfts.create.failed") {
+      message = `[webhook] Failed to mint NFT with action ID ${req.body.actionId}`;
+      console.log(message);
+    }
 
-    res.status(200).json({ message: "Webhook data received and broadcasted" });
+    // Use Pusher to broadcast this message to your frontend
+    if (message) {
+      await pusher.trigger("nft-channel", "nft-event", {
+        message,
+      });
+    }
+
+    res.status(200).json({ message: "Webhook processed" });
   } else {
-    res.setHeader("Allow", ["POST"]);
-    res.status(405).end("Method Not Allowed");
+    res.status(405).json({ message: "Method Not Allowed" });
   }
-  console.log({
-    appId: process.env.API_ID,
-    key: process.env.KEY,
-    secret: process.env.SECRET,
-    cluster: process.env.CLUSTER,
-  });
 }
