@@ -27,7 +27,7 @@ export default async function handler(req, res) {
 
     // Use Pusher to broadcast this message to your frontend
     if (message) {
-      await pusher.trigger("nft-channel", "nft-event", {
+      await pusher.trigger("aptos-nft-minter", "nft-event", {
         message,
       });
     }
