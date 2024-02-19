@@ -1,19 +1,25 @@
-import { pushUpdate } from "./events";
+// Import Pusher
+const Pusher = require("pusher");
 
-export default function handler(req, res) {
+// Initialize Pusher with your app credentials
+const pusher = new Pusher({
+  appId: process.env.API_ID,
+  key: process.env.KEY,
+  secret: process.env.SECRET,
+  cluster: process.env.CLUSTER,
+  useTLS: true,
+});
+
+export default async function handler(req, res) {
   if (req.method === "POST") {
-    // Assuming the body of the webhook event contains the type and data
-    const { type, data } = req.body;
-    console.log(`Received webhook - Type: ${type}`, data);
+    const data = req.body; // Your webhook payload
 
-    // TODO: Process your webhook data here. For real-time updates, you might
-    // store this in a database or in-memory storage that your SSE endpoint will poll.
+    // Trigger an event to your channel with the webhook data
+    await pusher.trigger("aptos-nft-minter-channel", "webhook-event", data);
 
-    res.status(200).json({ message: "Webhook received" });
+    res.status(200).json({ message: "Webhook data received and broadcasted" });
   } else {
     res.setHeader("Allow", ["POST"]);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
+    res.status(405).end("Method Not Allowed");
   }
-
-  pushUpdate({ type: "webhookReceived", data: req.body });
 }

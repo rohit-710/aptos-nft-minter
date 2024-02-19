@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import logo from "./AptosCover.png";
+import Pusher from "pusher-js";
 
 function App() {
   const [apiResponse, setApiResponse] = useState(null);
   const [sseMessages, setSseMessages] = useState([]); // State to store SSE messages
   const [updates, setUpdates] = useState([]);
+  const [webhookData, setWebhookData] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -63,13 +65,22 @@ function App() {
       alert("An error occurred. Check the console for details.");
     }
   };
-
-  // Polling mechanism for fetching updates
   useEffect(() => {
-    fetchUpdates(); // Initial fetch
-    const intervalId = setInterval(fetchUpdates, 10000); // Poll every 10 seconds
+    // Replace these with your actual Pusher key and cluster
+    const pusher = new Pusher(process.env.REACT_APP_KEY, {
+      cluster: process.env.REACT_APP_CLUSTER,
+      encrypted: true,
+    });
 
-    return () => clearInterval(intervalId); // Cleanup on component unmount
+    const channel = pusher.subscribe("aptos-nft-minter-channel");
+    channel.bind("webhook-event", function (data) {
+      // Update state with the new data
+      setWebhookData((prevData) => [...prevData, data]);
+    });
+
+    return () => {
+      pusher.unsubscribe("aptos-nft-minter-channel");
+    };
   }, []);
 
   return (
@@ -122,14 +133,8 @@ function App() {
       )}
       {/* Display SSE messages */}
       <div className="sse-messages">
-        <h1>Updates</h1>
-        <ul>
-          {updates.map((update) => (
-            <li key={update.id}>
-              {update.message} - {update.timestamp}
-            </li>
-          ))}
-        </ul>
+        <h2>Webhook Data:</h2>
+        <pre key={index}>{JSON.stringify(data, null, 2)}</pre>
       </div>
     </div>
   );
