@@ -122,7 +122,9 @@ function App() {
           value={formData.recipient}
           onChange={handleChange}
         />
-        <button type="submit">Mint NFT</button>
+        <button type="submit" style={{ margin: "10px" }}>
+          Mint NFT
+        </button>
       </form>
       {/* Display API response */}
       {apiResponse && (
@@ -135,7 +137,14 @@ function App() {
       <div className="sse-messages">
         <h2>Webhook Data:</h2>
         {webhookData.map((dataItem, index) => (
-          <pre key={index}>{JSON.stringify(dataItem)}</pre>
+          <div key={index}>
+            <p>Type: {dataItem.type}</p>
+            <p>Action ID: {dataItem.actionId}</p>
+            <p>Transaction ID: {dataItem.data.txId}</p>
+            <p>Token ID: {dataItem.data.token.id}</p>
+            <p>Recipient Wallet: {dataItem.data.recipient.walletAddress}</p>
+            {/* Display more fields as needed */}
+          </div>
         ))}
       </div>
     </div>
